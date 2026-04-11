@@ -1,0 +1,46 @@
+{
+  "questions": [
+    {
+      "id": "q1",
+      "results": {
+        "totalResponses": 0,
+        "options": [
+          { "label": "Excited & using it", "value": 0 },
+          { "label": "Curious & cautious", "value": 0 },
+          { "label": "Overwhelmed & unsure", "value": 0 },
+          { "label": "Skeptical & reluctant", "value": 0 }
+        ]
+      }
+    },
+    {
+      "id": "q2",
+      "results": {
+        "responses": []
+      }
+    },
+    {
+      "id": "q3",
+      "results": {
+        "countsByStage": {
+          "Technology Trigger": 0,
+          "Peak of Inflated Expectations": 0,
+          "Trough of Disillusionment": 0,
+          "Slope of Enlightenment": 0,
+          "Plateau of Productivity": 0
+        }
+      }
+    },
+    {
+      "id": "q4",
+      "results": {
+        "responses": []
+      }
+    },
+    {
+      "id": "q5",
+      "results": {
+        "words": []
+      }
+    }
+  ]
+}

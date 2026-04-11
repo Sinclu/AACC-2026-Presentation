@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI in Higher Education — Polling Summary</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <div>
+        <p class="kicker">Presentation Summary</p>
+        <h1>AI in Higher Education: Audience Polling Insights</h1>
+        <p class="subtitle">
+          Executive-ready recap page. This view is prebuilt from your Mentimeter questions and waits for
+          response data.
+        </p>
+      </div>
+      <div class="meta">
+        <p><strong>Prepared for:</strong> Higher Education Executive Audience</p>
+        <p><strong>Data source:</strong> Mentimeter export or API payload</p>
+        <p><strong>Status:</strong> <span id="data-status">Awaiting poll results</span></p>
+      </div>
+    </header>
+
+    <main id="dashboard" class="dashboard"></main>
+
+    <section class="input-panel">
+      <h2>Load Poll Results</h2>
+      <p>
+        Paste a JSON payload (matching <code>data.template.json</code>) from Mentimeter exports or your own
+        transformed data.
+      </p>
+      <textarea
+        id="json-input"
+        placeholder='{
+  "questions": [
+    {"id": "q1", "results": {...}}
+  ]
+}'
+      ></textarea>
+      <div class="actions">
+        <button id="load-btn">Load Results</button>
+        <button id="reset-btn" class="secondary">Reset to Empty Template</button>
+      </div>
+      <p id="message" aria-live="polite"></p>
+    </section>
+
+    <footer>
+      <p>Built for post-presentation distribution in place of a handout.</p>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
