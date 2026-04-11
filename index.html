@@ -8,24 +8,19 @@
   </head>
   <body>
     <header class="hero">
-      <div>
+      <div class="hero-copy">
         <p class="kicker">Presentation Summary</p>
         <h1>AI in Higher Education: Audience Polling Insights</h1>
         <p class="subtitle">
-          Executive-ready recap page. This view is prebuilt from your Mentimeter questions and waits for
-          response data.
+          Executive-ready recap page designed for clean post-presentation review. Insights appear as audience
+          responses are loaded.
         </p>
-      </div>
-      <div class="meta">
-        <p><strong>Prepared for:</strong> Higher Education Executive Audience</p>
-        <p><strong>Data source:</strong> Mentimeter export or API payload</p>
-        <p><strong>Status:</strong> <span id="data-status">Awaiting poll results</span></p>
       </div>
     </header>
 
     <main id="dashboard" class="dashboard"></main>
 
-    <section class="input-panel">
+    <section class="input-panel is-hidden" aria-hidden="true">
       <h2>Load Poll Results</h2>
       <p>
         Paste a JSON payload (matching <code>data.template.json</code>) from Mentimeter exports or your own

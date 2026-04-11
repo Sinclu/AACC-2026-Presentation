@@ -54,6 +54,13 @@ const questionBlueprint = [
 ];
 
 let state = structuredClone(questionBlueprint);
+const thematicTitles = {
+  q1: 'Audience Sentiment',
+  q2: 'Key Obstacles',
+  q3: 'Hype Cycle Status',
+  q4: 'Policy Landscape',
+  q5: 'What Would Help Most'
+};
 
 function renderDashboard(questions) {
   const dashboard = document.getElementById('dashboard');
@@ -65,7 +72,7 @@ function renderDashboard(questions) {
 
     const type = document.createElement('p');
     type.className = 'type';
-    type.textContent = q.type.replace('_', ' ');
+    type.textContent = thematicTitles[q.id] || q.type.replace('_', ' ');
 
     const title = document.createElement('h3');
     title.textContent = q.prompt;
@@ -91,9 +98,6 @@ function renderDashboard(questions) {
 
     dashboard.append(card);
   });
-
-  const hasData = questions.some((q) => hasMeaningfulData(q));
-  document.getElementById('data-status').textContent = hasData ? 'Results loaded' : 'Awaiting poll results';
 }
 
 function renderMultipleChoice(results = {}) {
@@ -117,14 +121,20 @@ function renderMultipleChoice(results = {}) {
     const li = document.createElement('li');
     const value = Number(opt.value || 0);
     const pct = total > 0 ? Math.round((value / total) * 100) : 0;
-    li.innerHTML = `<strong>${opt.label}</strong>: ${value} (${pct}%)`;
+    const statusText = value === 0 ? 'Awaiting responses...' : `${value} (${pct}%)`;
+    li.innerHTML = `<strong>${opt.label}</strong>: ${statusText}`;
 
     const barWrap = document.createElement('div');
-    barWrap.className = 'bar-wrap';
-    const bar = document.createElement('div');
-    bar.className = 'bar';
-    bar.style.width = `${pct}%`;
-    barWrap.append(bar);
+    if (value === 0) {
+      barWrap.className = 'bar-empty';
+      barWrap.textContent = 'Awaiting responses...';
+    } else {
+      barWrap.className = 'bar-wrap';
+      const bar = document.createElement('div');
+      bar.className = 'bar';
+      bar.style.width = `${pct}%`;
+      barWrap.append(bar);
+    }
 
     li.append(barWrap);
     list.append(li);
@@ -193,7 +203,10 @@ function renderStat(results = {}) {
     const pct = total > 0 ? Math.round((count / total) * 100) : 0;
     const block = document.createElement('div');
     block.className = 'stat';
-    block.innerHTML = `<span>${stage}</span><b>${count}</b><small>${pct}%</small>`;
+    block.innerHTML =
+      count === 0
+        ? `<span>${stage}</span><b>${count}</b><small>Awaiting responses...</small>`
+        : `<span>${stage}</span><b>${count}</b><small>${pct}%</small>`;
     grid.append(block);
   });
 
@@ -246,29 +259,36 @@ function mergeIncoming(incoming) {
   });
 }
 
-document.getElementById('load-btn').addEventListener('click', () => {
-  const message = document.getElementById('message');
-  try {
-    const raw = document.getElementById('json-input').value.trim();
-    if (!raw) {
-      message.textContent = 'Please paste JSON first.';
-      return;
+const loadBtn = document.getElementById('load-btn');
+const resetBtn = document.getElementById('reset-btn');
+
+if (loadBtn) {
+  loadBtn.addEventListener('click', () => {
+    const message = document.getElementById('message');
+    try {
+      const raw = document.getElementById('json-input').value.trim();
+      if (!raw) {
+        message.textContent = 'Please paste JSON first.';
+        return;
+      }
+
+      const parsed = JSON.parse(raw);
+      state = mergeIncoming(parsed);
+      renderDashboard(state);
+      message.textContent = 'Results loaded successfully.';
+    } catch (error) {
+      message.textContent = `Could not load JSON: ${error.message}`;
     }
+  });
+}
 
-    const parsed = JSON.parse(raw);
-    state = mergeIncoming(parsed);
+if (resetBtn) {
+  resetBtn.addEventListener('click', () => {
+    state = structuredClone(questionBlueprint);
+    document.getElementById('json-input').value = '';
+    document.getElementById('message').textContent = 'Template reset. Waiting for results.';
     renderDashboard(state);
-    message.textContent = 'Results loaded successfully.';
-  } catch (error) {
-    message.textContent = `Could not load JSON: ${error.message}`;
-  }
-});
-
-document.getElementById('reset-btn').addEventListener('click', () => {
-  state = structuredClone(questionBlueprint);
-  document.getElementById('json-input').value = '';
-  document.getElementById('message').textContent = 'Template reset. Waiting for results.';
-  renderDashboard(state);
-});
+  });
+}
 
 renderDashboard(state);
