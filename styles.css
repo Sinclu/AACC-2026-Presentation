@@ -7,6 +7,8 @@
   --brand: #1f3a5f;
   --accent: #2a9d8f;
   --highlight: #e9c46a;
+  --sinclair-red: #ac1a2f;
+  --sinclair-charcoal: #616366;
   --soft-blue: rgba(31, 58, 95, 0.08);
   --soft-teal: rgba(42, 157, 143, 0.1);
   --soft-amber: rgba(233, 196, 106, 0.18);
@@ -47,6 +49,7 @@ footer {
   overflow: hidden;
   background: var(--hero-tint), var(--card);
   padding: 34px 32px;
+  border-top: 4px solid var(--sinclair-red);
 }
 
 .hero::before {
@@ -73,11 +76,23 @@ footer {
 }
 
 .kicker {
-  color: var(--brand);
+  color: var(--sinclair-red);
   font-weight: 700;
   letter-spacing: 0.08em;
   font-size: 0.88rem;
   text-transform: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.kicker::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--sinclair-red);
+  box-shadow: 0 0 0 4px rgba(172, 26, 47, 0.12);
 }
 
 h1,
@@ -143,7 +158,7 @@ h3 {
 
 .summary-band__label {
   margin: 0;
-  color: var(--heading);
+  color: var(--sinclair-charcoal);
   font-size: 0.92rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -158,7 +173,7 @@ h3 {
   padding: 22px 24px;
   background: linear-gradient(135deg, rgba(31, 58, 95, 0.08), rgba(233, 196, 106, 0.16));
   border: 1px solid rgba(31, 58, 95, 0.08);
-  border-left: 4px solid var(--highlight);
+  border-left: 4px solid var(--sinclair-red);
 }
 
 .insight-callout__label {
@@ -458,6 +473,7 @@ footer {
   background: transparent;
   border: none;
   box-shadow: none;
+  border-top: 1px solid rgba(97, 99, 102, 0.22);
   padding-top: 0.35rem;
   padding-bottom: 1.5rem;
 }
