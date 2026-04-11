@@ -155,14 +155,6 @@ h3 {
   height: auto;
 }
 
-.hero-brand__caption {
-  margin: 0;
-  max-width: 22ch;
-  color: var(--sinclair-charcoal);
-  font-size: 0.92rem;
-  line-height: 1.45;
-}
-
 .subtitle,
 .empty,
 .note {
@@ -176,6 +168,9 @@ h3 {
 
 .hero-link-row {
   margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem 1.4rem;
 }
 
 .hero-link {
@@ -557,11 +552,6 @@ footer {
 
   .hero-brand {
     align-items: center;
-  }
-
-  .hero-brand__caption {
-    max-width: 32ch;
-    text-align: center;
   }
 
   .hero,
