@@ -55,11 +55,11 @@ const questionBlueprint = [
 
 let state = structuredClone(questionBlueprint);
 const thematicTitles = {
-  q1: 'Audience Sentiment',
-  q2: 'Key Obstacles',
+  q1: 'Audience Perspective',
+  q2: 'Barriers to Adoption',
   q3: 'Hype Cycle Status',
-  q4: 'Policy Landscape',
-  q5: 'What Would Help Most'
+  q4: 'Institutional Readiness',
+  q5: 'Top Enablers'
 };
 
 function renderDashboard(questions) {
@@ -121,8 +121,13 @@ function renderMultipleChoice(results = {}) {
     const li = document.createElement('li');
     const value = Number(opt.value || 0);
     const pct = total > 0 ? Math.round((value / total) * 100) : 0;
-    const statusText = value === 0 ? 'Awaiting responses...' : `${value} (${pct}%)`;
-    li.innerHTML = `<strong>${opt.label}</strong>: ${statusText}`;
+    const statusText = value === 0 ? 'Awaiting responses...' : `${pct}%`;
+    li.innerHTML = `
+      <div class="list-row">
+        <strong>${opt.label}</strong>
+        <span>${statusText}</span>
+      </div>
+    `;
 
     const barWrap = document.createElement('div');
     if (value === 0) {
@@ -197,12 +202,13 @@ function renderStat(results = {}) {
 
   const grid = document.createElement('div');
   grid.className = 'stat-grid';
+  const dominant = total > 0 ? Math.max(...entries.map(([, value]) => Number(value || 0))) : 0;
 
   entries.forEach(([stage, value]) => {
     const count = Number(value || 0);
     const pct = total > 0 ? Math.round((count / total) * 100) : 0;
     const block = document.createElement('div');
-    block.className = 'stat';
+    block.className = count > 0 && count === dominant ? 'stat stat-dominant' : 'stat';
     block.innerHTML =
       count === 0
         ? `<span>${stage}</span><b>${count}</b><small>Awaiting responses...</small>`
