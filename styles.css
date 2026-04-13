@@ -250,6 +250,80 @@ h3 {
   line-height: 1.5;
 }
 
+.briefing-resources {
+  width: min(1100px, 92vw);
+  margin: 0 auto 1.35rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.8fr);
+  gap: 1.35rem;
+}
+
+.resource-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  border-top: 4px solid var(--brand);
+  box-shadow: var(--shadow);
+  padding: 22px;
+}
+
+.resource-card--presentation {
+  display: flex;
+  flex-direction: column;
+}
+
+.resource-card__header h2 {
+  margin: 0.15rem 0 0.4rem;
+  font-size: 1.4rem;
+}
+
+.resource-card__eyebrow {
+  margin: 0;
+  color: var(--sinclair-red);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.resource-card__text {
+  margin: 0.1rem 0 1rem;
+  color: var(--muted);
+}
+
+.resource-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.resource-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0.7rem 1rem;
+  border-radius: 999px;
+  background: var(--brand);
+  color: #ffffff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.resource-link.secondary {
+  background: rgba(31, 58, 95, 0.08);
+  color: var(--brand);
+}
+
+.presentation-frame {
+  width: 100%;
+  min-height: 460px;
+  border: 1px solid rgba(31, 58, 95, 0.1);
+  border-radius: 10px;
+  background: #f6f8fb;
+}
+
 .dashboard {
   width: min(1100px, 92vw);
   margin: 0 auto;
@@ -309,6 +383,20 @@ h3 {
 
 .list li strong {
   color: var(--heading);
+}
+
+.list-themes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.list-themes li {
+  margin: 0;
+  padding: 0.7rem 0.95rem;
+  border-radius: 999px;
+  background: rgba(31, 58, 95, 0.04);
+  border: 1px solid rgba(31, 58, 95, 0.1);
 }
 
 .card:first-child .list li {
@@ -546,6 +634,10 @@ footer {
     grid-template-columns: 1fr;
   }
 
+  .briefing-resources {
+    grid-template-columns: 1fr;
+  }
+
   .hero {
     padding: 28px 24px;
   }
@@ -557,6 +649,7 @@ footer {
   .hero,
   .summary-band,
   .insight-callout,
+  .briefing-resources,
   .input-panel,
   footer {
     width: min(1100px, calc(100vw - 24px));
@@ -601,7 +694,12 @@ footer {
     gap: 0.8rem;
   }
 
+  .presentation-frame {
+    display: none;
+  }
+
   .card,
+  .resource-card,
   .insight-callout,
   footer {
     break-inside: avoid;

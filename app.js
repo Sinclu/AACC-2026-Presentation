@@ -4,12 +4,12 @@ const questionBlueprint = [
     type: 'multiple_choice',
     prompt: 'Which option best describes your views on AI in education?',
     results: {
-      totalResponses: 0,
+      totalResponses: 49,
       options: [
-        { label: 'Excited & using it', value: 0 },
-        { label: 'Curious & cautious', value: 0 },
+        { label: 'Excited & using it', value: 35 },
+        { label: 'Curious & cautious', value: 13 },
         { label: 'Overwhelmed & unsure', value: 0 },
-        { label: 'Skeptical & reluctant', value: 0 }
+        { label: 'Skeptical & reluctant', value: 1 }
       ]
     }
   },
@@ -18,7 +18,14 @@ const questionBlueprint = [
     type: 'open_ended',
     prompt: 'In just a few words, what do you feel is the biggest obstacle for AI integration at your institution?',
     results: {
-      responses: []
+      responses: [
+        'Fear and uncertainty',
+        'Faculty resistance',
+        'Academic integrity',
+        'Institutional support',
+        'Standardization',
+        'Ethical concerns'
+      ]
     }
   },
   {
@@ -48,7 +55,33 @@ const questionBlueprint = [
     type: 'word_cloud',
     prompt: 'In one word, what would most help you move closer to adopting AI in your role?',
     results: {
-      words: []
+      words: [
+        { term: 'training', weight: 11 },
+        { term: 'time', weight: 7 },
+        { term: 'education', weight: 2 },
+        { term: 'examples', weight: 2 },
+        { term: 'policy', weight: 2 },
+        { term: 'successes', weight: 2 },
+        { term: 'access', weight: 1 },
+        { term: 'claude', weight: 1 },
+        { term: 'communication', weight: 1 },
+        { term: 'curiosity', weight: 1 },
+        { term: 'educating our faculty', weight: 1 },
+        { term: 'expertise', weight: 1 },
+        { term: 'free', weight: 1 },
+        { term: 'knowledge', weight: 1 },
+        { term: 'leadership', weight: 1 },
+        { term: 'money', weight: 1 },
+        { term: 'promotion', weight: 1 },
+        { term: 'proper-usage', weight: 1 },
+        { term: 'requirements', weight: 1 },
+        { term: 'support', weight: 1 },
+        { term: 'support expertise', weight: 1 },
+        { term: 'support when used wrong', weight: 1 },
+        { term: 'tools', weight: 1 },
+        { term: 'trust', weight: 1 },
+        { term: 'understanding', weight: 1 }
+      ]
     }
   }
 ];
@@ -155,7 +188,7 @@ function renderOpenEnded(results = {}) {
   }
 
   const list = document.createElement('ul');
-  list.className = 'list';
+  list.className = 'list list-themes';
   results.responses.forEach((entry) => {
     const li = document.createElement('li');
     li.textContent = entry;
