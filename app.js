@@ -19,12 +19,11 @@ const questionBlueprint = [
     prompt: 'In just a few words, what do you feel is the biggest obstacle for AI integration at your institution?',
     results: {
       responses: [
-        'Fear and uncertainty',
-        'Faculty resistance',
-        'Academic integrity',
-        'Institutional support',
-        'Standardization',
-        'Ethical concerns'
+        'Fear and uncertainty: fear of change, waiting for others to go first, lack of training, limited time, uncertainty about AI capability, hallucinations, and the challenge of building buy-in.',
+        'Faculty resistance: reluctance among some senior faculty, skepticism about impact on student learning, and resistance from vocal faculty in positions of influence.',
+        'Academic integrity: concerns about cheating, student misuse, data security, and the need for trusted experts to guide responsible use.',
+        'Institutional support and standardization: lack of institutional direction, no central organizing body, limited investment, readiness gaps, and a culture of \"we have always done it this way.\"',
+        'Ethical concerns: privacy, equity, environmental impact, and concern that students may not build foundational skills such as writing.'
       ]
     }
   },
@@ -47,7 +46,14 @@ const questionBlueprint = [
     type: 'open_ended',
     prompt: 'Does your institution have AI policies set in place? If so, what are the key characteristics of those policies?',
     results: {
-      responses: []
+      responses: [
+        'Current status: a majority reported no formal AI policy or said their institution is not there yet.',
+        'In progress: many colleges are actively developing policy through faculty task forces, committee work, and draft review cycles.',
+        'Policy pattern: syllabus-specific statements often clarify whether AI use must be disclosed or is not permitted.',
+        'Policy pattern: guidance commonly emphasizes data security, privacy, and ethical use.',
+        'Policy pattern: several institutions allow AI for efficiency gains or when explicit instructor permission is given.',
+        'Policy pattern: some colleges are folding AI expectations into existing academic integrity policies as an interim solution.'
+      ]
     }
   },
   {
@@ -63,24 +69,9 @@ const questionBlueprint = [
         { term: 'policy', weight: 2 },
         { term: 'successes', weight: 2 },
         { term: 'access', weight: 1 },
-        { term: 'claude', weight: 1 },
-        { term: 'communication', weight: 1 },
-        { term: 'curiosity', weight: 1 },
-        { term: 'educating our faculty', weight: 1 },
-        { term: 'expertise', weight: 1 },
-        { term: 'free', weight: 1 },
-        { term: 'knowledge', weight: 1 },
         { term: 'leadership', weight: 1 },
         { term: 'money', weight: 1 },
-        { term: 'promotion', weight: 1 },
-        { term: 'proper-usage', weight: 1 },
-        { term: 'requirements', weight: 1 },
-        { term: 'support', weight: 1 },
-        { term: 'support expertise', weight: 1 },
-        { term: 'support when used wrong', weight: 1 },
-        { term: 'tools', weight: 1 },
-        { term: 'trust', weight: 1 },
-        { term: 'understanding', weight: 1 }
+        { term: 'tools', weight: 1 }
       ]
     }
   }
