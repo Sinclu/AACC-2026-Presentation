@@ -117,6 +117,83 @@
       <p>Prepared for AACC Conference – Seattle, WA</p>
     </footer>
 
+    <script id="initial-poll-data" type="application/json">
+      {
+        "questions": [
+          {
+            "id": "q1",
+            "type": "multiple_choice",
+            "results": {
+              "totalResponses": 49,
+              "options": [
+                { "label": "Excited & using it", "value": 35 },
+                { "label": "Curious & cautious", "value": 13 },
+                { "label": "Overwhelmed & unsure", "value": 0 },
+                { "label": "Skeptical & reluctant", "value": 1 }
+              ]
+            }
+          },
+          {
+            "id": "q2",
+            "type": "open_ended",
+            "results": {
+              "responses": [
+                "Fear and uncertainty: fear of change, waiting for others to go first, lack of training, limited time, uncertainty about AI capability, hallucinations, and the challenge of building buy-in.",
+                "Faculty resistance: reluctance among some senior faculty, skepticism about impact on student learning, and resistance from vocal faculty in positions of influence.",
+                "Academic integrity: concerns about cheating, student misuse, data security, and the need for trusted experts to guide responsible use.",
+                "Institutional support and standardization: lack of institutional direction, no central organizing body, limited investment, readiness gaps, and a culture of \"we have always done it this way.\"",
+                "Ethical concerns: privacy, equity, environmental impact, and concern that students may not build foundational skills such as writing."
+              ]
+            }
+          },
+          {
+            "id": "q3",
+            "type": "stat",
+            "results": {
+              "countsByStage": {
+                "Technology Trigger": 3,
+                "Peak of Inflated Expectations": 10,
+                "Trough of Disillusionment": 12,
+                "Slope of Enlightenment": 8,
+                "Plateau of Productivity": 2
+              }
+            }
+          },
+          {
+            "id": "q4",
+            "type": "open_ended",
+            "results": {
+              "responses": [
+                "Current status: a majority reported no formal AI policy or said their institution is not there yet.",
+                "In progress: many colleges are actively developing policy through faculty task forces, committee work, and draft review cycles.",
+                "Policy pattern: syllabus-specific statements often clarify whether AI use must be disclosed or is not permitted.",
+                "Policy pattern: guidance commonly emphasizes data security, privacy, and ethical use.",
+                "Policy pattern: several institutions allow AI for efficiency gains or when explicit instructor permission is given.",
+                "Policy pattern: some colleges are folding AI expectations into existing academic integrity policies as an interim solution."
+              ]
+            }
+          },
+          {
+            "id": "q5",
+            "type": "word_cloud",
+            "results": {
+              "words": [
+                { "term": "training", "weight": 11 },
+                { "term": "time", "weight": 7 },
+                { "term": "education", "weight": 2 },
+                { "term": "examples", "weight": 2 },
+                { "term": "policy", "weight": 2 },
+                { "term": "successes", "weight": 2 },
+                { "term": "access", "weight": 1 },
+                { "term": "leadership", "weight": 1 },
+                { "term": "money", "weight": 1 },
+                { "term": "tools", "weight": 1 }
+              ]
+            }
+          }
+        ]
+      }
+    </script>
     <script src="app.js"></script>
   </body>
 </html>

@@ -412,6 +412,19 @@ function normalizeQuestions(incoming) {
   return null;
 }
 
+function getEmbeddedData() {
+  const node = document.getElementById('initial-poll-data');
+  if (!node) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(node.textContent);
+  } catch (error) {
+    return null;
+  }
+}
+
 async function refreshPollData() {
   const message = document.getElementById('message');
 
@@ -484,6 +497,11 @@ if (resetBtn) {
     document.getElementById('message').textContent = 'Template reset. Waiting for results.';
     renderAll();
   });
+}
+
+const embeddedData = getEmbeddedData();
+if (embeddedData) {
+  state = mergeIncoming(embeddedData);
 }
 
 renderAll();
