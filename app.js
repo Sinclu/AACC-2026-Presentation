@@ -1,15 +1,17 @@
+const DATA_URL = 'poll-results.json';
+const POLL_INTERVAL_MS = 30000;
 const questionBlueprint = [
   {
     id: 'q1',
     type: 'multiple_choice',
     prompt: 'Which option best describes your views on AI in education?',
     results: {
-      totalResponses: 49,
+      totalResponses: 0,
       options: [
-        { label: 'Excited & using it', value: 35 },
-        { label: 'Curious & cautious', value: 13 },
+        { label: 'Excited & using it', value: 0 },
+        { label: 'Curious & cautious', value: 0 },
         { label: 'Overwhelmed & unsure', value: 0 },
-        { label: 'Skeptical & reluctant', value: 1 }
+        { label: 'Skeptical & reluctant', value: 0 }
       ]
     }
   },
@@ -18,13 +20,7 @@ const questionBlueprint = [
     type: 'open_ended',
     prompt: 'In just a few words, what do you feel is the biggest obstacle for AI integration at your institution?',
     results: {
-      responses: [
-        'Fear and uncertainty: fear of change, waiting for others to go first, lack of training, limited time, uncertainty about AI capability, hallucinations, and the challenge of building buy-in.',
-        'Faculty resistance: reluctance among some senior faculty, skepticism about impact on student learning, and resistance from vocal faculty in positions of influence.',
-        'Academic integrity: concerns about cheating, student misuse, data security, and the need for trusted experts to guide responsible use.',
-        'Institutional support and standardization: lack of institutional direction, no central organizing body, limited investment, readiness gaps, and a culture of \"we have always done it this way.\"',
-        'Ethical concerns: privacy, equity, environmental impact, and concern that students may not build foundational skills such as writing.'
-      ]
+      responses: []
     }
   },
   {
@@ -33,11 +29,11 @@ const questionBlueprint = [
     prompt: 'Where are you on the Gartner Hype Cycle?',
     results: {
       countsByStage: {
-        'Technology Trigger': 3,
-        'Peak of Inflated Expectations': 10,
-        'Trough of Disillusionment': 12,
-        'Slope of Enlightenment': 8,
-        'Plateau of Productivity': 2
+        'Technology Trigger': 0,
+        'Peak of Inflated Expectations': 0,
+        'Trough of Disillusionment': 0,
+        'Slope of Enlightenment': 0,
+        'Plateau of Productivity': 0
       }
     }
   },
@@ -46,14 +42,7 @@ const questionBlueprint = [
     type: 'open_ended',
     prompt: 'Does your institution have AI policies set in place? If so, what are the key characteristics of those policies?',
     results: {
-      responses: [
-        'Current status: a majority reported no formal AI policy or said their institution is not there yet.',
-        'In progress: many colleges are actively developing policy through faculty task forces, committee work, and draft review cycles.',
-        'Policy pattern: syllabus-specific statements often clarify whether AI use must be disclosed or is not permitted.',
-        'Policy pattern: guidance commonly emphasizes data security, privacy, and ethical use.',
-        'Policy pattern: several institutions allow AI for efficiency gains or when explicit instructor permission is given.',
-        'Policy pattern: some colleges are folding AI expectations into existing academic integrity policies as an interim solution.'
-      ]
+      responses: []
     }
   },
   {
@@ -61,23 +50,13 @@ const questionBlueprint = [
     type: 'word_cloud',
     prompt: 'In one word, what would most help you move closer to adopting AI in your role?',
     results: {
-      words: [
-        { term: 'training', weight: 11 },
-        { term: 'time', weight: 7 },
-        { term: 'education', weight: 2 },
-        { term: 'examples', weight: 2 },
-        { term: 'policy', weight: 2 },
-        { term: 'successes', weight: 2 },
-        { term: 'access', weight: 1 },
-        { term: 'leadership', weight: 1 },
-        { term: 'money', weight: 1 },
-        { term: 'tools', weight: 1 }
-      ]
+      words: []
     }
   }
 ];
 
 let state = structuredClone(questionBlueprint);
+let pollTimer = null;
 const thematicTitles = {
   q1: 'Audience Perspective',
   q2: 'Barriers to Adoption',
@@ -125,6 +104,73 @@ function renderDashboard(questions) {
     }
 
     dashboard.append(card);
+  });
+}
+
+function renderInsight(questions) {
+  const insight = document.getElementById('insight-text');
+  const audience = questions.find((q) => q.id === 'q1');
+  const hype = questions.find((q) => q.id === 'q3');
+  const enablers = questions.find((q) => q.id === 'q5');
+
+  if (!insight) {
+    return;
+  }
+
+  const audienceTotal = Number(audience?.results?.totalResponses || 0);
+  const peak = Number(hype?.results?.countsByStage?.['Peak of Inflated Expectations'] || 0);
+  const trough = Number(hype?.results?.countsByStage?.['Trough of Disillusionment'] || 0);
+  const plateau = Number(hype?.results?.countsByStage?.['Plateau of Productivity'] || 0);
+  const hypeTotal = Object.values(hype?.results?.countsByStage || {}).reduce((sum, value) => sum + Number(value || 0), 0);
+  const training = Number(
+    (enablers?.results?.words || []).find((word) => word.term.toLowerCase() === 'training')?.weight || 0
+  );
+  const time = Number(
+    (enablers?.results?.words || []).find((word) => word.term.toLowerCase() === 'time')?.weight || 0
+  );
+
+  if (audienceTotal === 0 && hypeTotal === 0 && training === 0 && time === 0) {
+    insight.textContent =
+      'Audience perspective, adoption barriers, and readiness signals will populate here as AACC participants submit responses.';
+    return;
+  }
+
+  const middlePct = hypeTotal > 0 ? Math.round(((peak + trough) / hypeTotal) * 100) : 0;
+  const plateauPct = hypeTotal > 0 ? Math.round((plateau / hypeTotal) * 100) : 0;
+
+  insight.textContent =
+    `Participants are largely optimistic about AI, but the strongest barriers remain fear, uncertainty, and uneven institutional readiness. ${middlePct}% of respondents place their institutions between the Peak of Inflated Expectations and the Trough of Disillusionment, while ${plateauPct}% report reaching the Plateau of Productivity. Training (${training}) and time (${time}) remain the clearest needs.`;
+}
+
+function renderReadiness(questions) {
+  const readinessQuestion = questions.find((q) => q.id === 'q4');
+  const summary = document.getElementById('readiness-summary');
+  const list = document.getElementById('readiness-list');
+
+  if (!summary || !list) {
+    return;
+  }
+
+  const responses = Array.isArray(readinessQuestion?.results?.responses)
+    ? readinessQuestion.results.responses
+    : [];
+
+  list.innerHTML = '';
+
+  if (responses.length === 0) {
+    summary.textContent =
+      'Policy development updates will appear here as institutional readiness responses are collected.';
+    const item = document.createElement('li');
+    item.textContent = 'Institutions are still submitting readiness and policy observations.';
+    list.append(item);
+    return;
+  }
+
+  summary.textContent = responses[0];
+  responses.slice(1).forEach((entry) => {
+    const item = document.createElement('li');
+    item.textContent = entry;
+    list.append(item);
   });
 }
 
@@ -249,7 +295,7 @@ function renderStat(results = {}) {
     const block = document.createElement('div');
     block.className = count > 0 && count === dominant ? 'stat stat-dominant' : 'stat';
     block.innerHTML =
-      count === 0
+      total === 0
         ? `<span>${stage}</span><b>${count}</b><small>Awaiting responses...</small>`
         : `<span>${stage}</span><b>${count}</b><small>${pct}%</small>`;
     grid.append(block);
@@ -284,24 +330,128 @@ function hasMeaningfulData(question) {
 }
 
 function mergeIncoming(incoming) {
-  if (!incoming || !Array.isArray(incoming.questions)) {
+  const questions = normalizeQuestions(incoming);
+  if (!Array.isArray(questions)) {
     throw new Error('Expected shape: { "questions": [...] }');
   }
 
-  const byId = new Map(incoming.questions.map((q) => [q.id, q]));
+  const byId = new Map(questions.map((q) => [q.id, q]));
 
   return questionBlueprint.map((base) => {
     const found = byId.get(base.id);
     if (!found) return structuredClone(base);
+
+    const mergedResults = {
+      ...base.results,
+      ...(found.results || {})
+    };
+
+    if (base.type === 'multiple_choice') {
+      const baseOptions = Array.isArray(base.results.options) ? base.results.options : [];
+      const incomingOptions = Array.isArray(found.results?.options) ? found.results.options : [];
+      const optionByLabel = new Map(
+        incomingOptions.map((option) => [String(option.label || '').toLowerCase(), option])
+      );
+
+      mergedResults.options = baseOptions.map((option) => {
+        const match = optionByLabel.get(option.label.toLowerCase());
+        return {
+          ...option,
+          ...(match || {}),
+          value: Number(match?.value ?? option.value ?? 0)
+        };
+      });
+
+      mergedResults.totalResponses =
+        Number(found.results?.totalResponses) ||
+        mergedResults.options.reduce((sum, option) => sum + Number(option.value || 0), 0);
+    }
+
+    if (base.type === 'stat') {
+      const baseStages = base.results.countsByStage || {};
+      const incomingStages = found.results?.countsByStage || {};
+      mergedResults.countsByStage = Object.fromEntries(
+        Object.keys(baseStages).map((stage) => [stage, Number(incomingStages[stage] ?? baseStages[stage] ?? 0)])
+      );
+    }
+
+    if (base.type === 'open_ended') {
+      mergedResults.responses = Array.isArray(found.results?.responses) ? found.results.responses : base.results.responses;
+    }
+
+    if (base.type === 'word_cloud') {
+      mergedResults.words = Array.isArray(found.results?.words)
+        ? found.results.words.map((word) => ({
+            term: String(word.term || ''),
+            weight: Number(word.weight || 0)
+          }))
+        : base.results.words;
+    }
+
     return {
       ...base,
       ...found,
-      results: {
-        ...base.results,
-        ...(found.results || {})
-      }
+      results: mergedResults
     };
   });
+}
+
+function normalizeQuestions(incoming) {
+  if (!incoming) {
+    return null;
+  }
+
+  if (Array.isArray(incoming.questions)) {
+    return incoming.questions;
+  }
+
+  if (Array.isArray(incoming)) {
+    return incoming;
+  }
+
+  return null;
+}
+
+async function refreshPollData() {
+  const message = document.getElementById('message');
+
+  try {
+    const response = await fetch(`${DATA_URL}?t=${Date.now()}`, {
+      cache: 'no-store'
+    });
+
+    if (!response.ok) {
+      throw new Error(`Unable to load poll data (${response.status})`);
+    }
+
+    const parsed = await response.json();
+    state = mergeIncoming(parsed);
+    renderAll();
+
+    if (message) {
+      message.textContent = 'Results refreshed.';
+    }
+  } catch (error) {
+    if (message) {
+      message.textContent = `Live refresh failed: ${error.message}`;
+    }
+  }
+}
+
+function renderAll() {
+  renderInsight(state);
+  renderReadiness(state);
+  renderDashboard(state);
+}
+
+function startPolling() {
+  if (pollTimer) {
+    clearInterval(pollTimer);
+  }
+
+  pollTimer = setInterval(() => {
+    refreshPollData();
+  }, POLL_INTERVAL_MS);
 }
 
 const loadBtn = document.getElementById('load-btn');
@@ -319,7 +469,7 @@ if (loadBtn) {
 
       const parsed = JSON.parse(raw);
       state = mergeIncoming(parsed);
-      renderDashboard(state);
+      renderAll();
       message.textContent = 'Results loaded successfully.';
     } catch (error) {
       message.textContent = `Could not load JSON: ${error.message}`;
@@ -332,8 +482,10 @@ if (resetBtn) {
     state = structuredClone(questionBlueprint);
     document.getElementById('json-input').value = '';
     document.getElementById('message').textContent = 'Template reset. Waiting for results.';
-    renderDashboard(state);
+    renderAll();
   });
 }
 
-renderDashboard(state);
+renderAll();
+refreshPollData();
+startPolling();
