@@ -410,10 +410,16 @@ h3 {
 
 .list-themes li {
   margin: 0;
-  padding: 0.7rem 0.95rem;
-  border-radius: 999px;
+  padding: 0.75rem 1rem;
+  border-radius: 20px;
   background: rgba(31, 58, 95, 0.04);
   border: 1px solid rgba(31, 58, 95, 0.1);
+  font-size: 0.92rem;
+  line-height: 1.45;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .card:first-child .list li {
