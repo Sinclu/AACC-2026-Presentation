@@ -291,6 +291,13 @@ h3 {
   color: var(--muted);
 }
 
+.resource-card__note {
+  margin: 0.1rem 0 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+  font-style: italic;
+}
+
 .resource-card__actions {
   display: flex;
   flex-wrap: wrap;
