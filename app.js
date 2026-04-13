@@ -33,11 +33,11 @@ const questionBlueprint = [
     prompt: 'Where are you on the Gartner Hype Cycle?',
     results: {
       countsByStage: {
-        'Technology Trigger': 0,
-        'Peak of Inflated Expectations': 0,
-        'Trough of Disillusionment': 0,
-        'Slope of Enlightenment': 0,
-        'Plateau of Productivity': 0
+        'Technology Trigger': 3,
+        'Peak of Inflated Expectations': 10,
+        'Trough of Disillusionment': 12,
+        'Slope of Enlightenment': 8,
+        'Plateau of Productivity': 2
       }
     }
   },
@@ -91,6 +91,10 @@ function renderDashboard(questions) {
   dashboard.innerHTML = '';
 
   questions.forEach((q) => {
+    if (q.id === 'q4') {
+      return;
+    }
+
     const card = document.createElement('article');
     card.className = 'card';
 
@@ -223,6 +227,17 @@ function renderStat(results = {}) {
   note.className = 'note';
   note.textContent = `Responses: ${total}`;
   wrap.append(note);
+
+  if (total > 0) {
+    const middleCluster = (Number(results.countsByStage['Peak of Inflated Expectations'] || 0) +
+      Number(results.countsByStage['Trough of Disillusionment'] || 0));
+    const plateau = Number(results.countsByStage['Plateau of Productivity'] || 0);
+    const summary = document.createElement('p');
+    summary.className = 'stat-summary';
+    summary.textContent =
+      `${Math.round((middleCluster / total) * 100)}% of participants are clustered between the Peak of Inflated Expectations and the Trough of Disillusionment, while only ${Math.round((plateau / total) * 100)}% report reaching the Plateau of Productivity.`;
+    wrap.append(summary);
+  }
 
   const grid = document.createElement('div');
   grid.className = 'stat-grid';

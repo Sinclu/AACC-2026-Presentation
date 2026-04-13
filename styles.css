@@ -536,6 +536,13 @@ h3 {
   margin-top: 0.85rem;
 }
 
+.stat-summary {
+  margin: 0.55rem 0 0.2rem;
+  color: var(--heading);
+  font-size: 0.96rem;
+  line-height: 1.5;
+}
+
 .stat {
   border: 1px solid rgba(31, 58, 95, 0.1);
   border-radius: 12px;
