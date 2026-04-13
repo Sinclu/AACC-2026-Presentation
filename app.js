@@ -149,7 +149,7 @@ function renderMultipleChoice(results = {}) {
     const li = document.createElement('li');
     const value = Number(opt.value || 0);
     const pct = total > 0 ? Math.round((value / total) * 100) : 0;
-    const statusText = value === 0 ? 'Awaiting responses...' : `${pct}%`;
+    const statusText = total === 0 ? 'Awaiting audience input' : `${value} vote${value === 1 ? '' : 's'} (${pct}%)`;
     li.innerHTML = `
       <div class="list-row">
         <strong>${opt.label}</strong>
@@ -158,9 +158,9 @@ function renderMultipleChoice(results = {}) {
     `;
 
     const barWrap = document.createElement('div');
-    if (value === 0) {
+    if (total === 0 || value === 0) {
       barWrap.className = 'bar-empty';
-      barWrap.textContent = 'Awaiting responses...';
+      barWrap.textContent = total === 0 ? 'Awaiting audience input' : '0 votes recorded';
     } else {
       barWrap.className = 'bar-wrap';
       const bar = document.createElement('div');
